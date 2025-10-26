@@ -1,0 +1,221 @@
+{
+	"info": {
+		"_postman_id": "7298c225-a08d-44d3-934d-a99cf7c13e13",
+		"name": "PetStore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10314550"
+	},
+	"item": [
+		{
+			"name": "CreateUser",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomNum = Math.floor(Math.random() * 10000);",
+							"pm.environment.set('firstName', 'Mari Carmen ' + randomNum);",
+							"pm.environment.set('lastName', 'Apellido ' + randomNum);",
+							"pm.environment.set('email', `MariCarmen${randomNum}@example.com`);",
+							"pm.environment.set('password', `Password${randomNum}`);",
+							"pm.environment.set('phone', `+3466666${randomNum}`);",
+							"pm.environment.set('userStatus', '1');"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{userID}},\r\n  \"username\": \"{{userName}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"{{phone}}\",\r\n  \"userStatus\": {{userStatus}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/user",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"User id is the expected\", function () {\r",
+							"    pm.expect(jsonData.id.toString()).to.equal(pm.environment.get('userID'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User name is the expected\", function () {\r",
+							"    pm.expect(jsonData.username).to.equal(pm.environment.get('userName'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User firstName is the expected\", function () {\r",
+							"    pm.expect(jsonData.firstName).to.equal(pm.environment.get('firstName'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User lastName is the expected\", function () {\r",
+							"    pm.expect(jsonData.lastName).to.equal(pm.environment.get('lastName'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User email is the expected\", function () {\r",
+							"    pm.expect(jsonData.email).to.equal(pm.environment.get('email'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User password is the expected\", function () {\r",
+							"    pm.expect(jsonData.password).to.equal(pm.environment.get('password'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User phone is the expected\", function () {\r",
+							"    pm.expect(jsonData.phone).to.equal(pm.environment.get('phone'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User userStatus is the expected\", function () {\r",
+							"    pm.expect(jsonData.userStatus.toString()).to.equal(pm.environment.get('userStatus'));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/user/{{userName}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"user",
+						"{{userName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PetFindByStatusSold",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/pet/findByStatus?status=sold",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"pet",
+						"findByStatus"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "sold"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"phone\", pm.environment.get(\"newPhone\"));\r",
+							"pm.environment.set(\"password\", pm.environment.get(\"newPassword\"));"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{userID}},\r\n  \"username\": \"{{userName}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{newPassword}}\",\r\n  \"phone\": \"{{newPhone}}\",\r\n  \"userStatus\": {{userStatus}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/user/{{userName}}",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"user",
+						"{{userName}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
